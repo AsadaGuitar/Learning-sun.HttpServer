@@ -1,0 +1,7 @@
+[debug] > Exec(all {file:/C:/Users/soroc/Documents/Scala-workspace/DeployTest/}deploytest/products {file:/C:/Users/soroc/Documents/Scala-workspace/DeployTest/}deploytest/test:products, None, None)
+[debug] Evaluating tasks: Compile / products, Test / products
+[debug] Running task... Cancel: Signal, check cycles: false, forcegc: true
+[success] Total time: 0 s, completed 2021/09/23 22:36:22
+[debug] > Exec(idea-shell, None, None)
+[debug] > Exec(, None, None)
+[debug] > Exec(idea-shell, None, None)
