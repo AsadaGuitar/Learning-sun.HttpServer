@@ -3,6 +3,7 @@ package com.example.app.api
 import com.example.app.api.home.{EntryAPI, MoneyAPI}
 import com.sun.net.httpserver.{HttpExchange, HttpHandler, HttpServer}
 
+import java.io.IOException
 import java.net.{InetSocketAddress, URI}
 
 object APIServer {
@@ -15,7 +16,7 @@ object APIServer {
   case class Request(header: java.util.Set[java.util.Map.Entry[String, java.util.List[String]]],
                      body  : Option[String])
 
-  def startServer(): Either[java.io.IOException,Unit] ={
+  def startServer(): Either[IOException,Unit] ={
 
     val port = 8000
 

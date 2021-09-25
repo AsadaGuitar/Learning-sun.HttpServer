@@ -1,83 +1,80 @@
 package com.example.app.api.home
 
 import com.example.app.api.APIServer.Request
-import com.example.app.dao.DatabaseAccessory
+import com.example.app.dao.{CommitException, ConnectionException, DMLException, RollbackException, SavepointException}
+import com.example.app.service.{UserServiceMySQL, UsersService}
 import org.json.JSONObject
-
-import java.sql.Savepoint
 
 
 object EntryAPI {
 
-  private val url = "jdbc:mysql://localhost:3306/money_keep"
-  private val username = "root"
-  private val password = "Asd18894"
+  lazy val service: UsersService = new UserServiceMySQL
 
   def get(request: Request): Unit ={
-
 
   }
 
   @throws[java.sql.SQLException]
   def post(request: Request): Unit = {
+    println("start EntryAPI.post()")
 
     val reqJson = for{
       req <- request.body
     } yield new JSONObject(req)
 
-    val jsonName = reqJson.map(_.get("name"))
-    val name = jsonName match {
-      case Some(x) => x.toString
-      case None =>
-        println("Not Found 'name'.")
-        return
+    val jsonName = for{
+      x <- reqJson.map(_.get("name").toString)
+      if x.nonEmpty
+    } yield x
+
+    if (jsonName.isEmpty) {
+      println("Could not Found 'name'.")
+      return
     }
 
-    val jsonPass = reqJson.map(_.get("pass"))
-    val pass = jsonPass match {
-      case Some(x) => x.toString
-      case None =>
-        println("Not Found 'pass'.")
-        return
-    }
+    val jsonPass = for{
+      x <- reqJson.map(_.get("pass").toString)
+      if x.nonEmpty
+    } yield x
 
-
-    import java.sql.SQLException
-
-    val sqlFormat = "INSERT INTO users(name, password) VALUES('%s', '%s');"
-
-    lazy val database: Either[SQLException, DatabaseAccessory] = try {
-      val d = DatabaseAccessory(url,username,password)
-      Right(d)
-    } catch {case e: SQLException =>
-      println("Could not access to Database.")
-      Left(e)
-    }
-
-    lazy val savepoint: Either[SQLException, Either[SQLException, Savepoint]] = try {
-      for{d <- database} yield try {
-        val s = d.setSavepoint()
-        Right(s)
-      } catch {case e: SQLException =>
-        println("Could not get Savepoint.")
-        Left(e)}
+    if (jsonPass.isEmpty) {
+      println("Could not Found 'pass'.")
+      return
     }
 
     println("データベースに接続します。")
-    for {
-      dao <- database
-      sp  <- savepoint.flatten
-    } yield {
+
+    try {
+
+      service.setConnection()
+
+      val sp = service.setSavepoint()
+
       try {
-        val sql = sqlFormat.format(name, pass)
-        dao.executeUpdate(sql)
+        for {
+          name <- jsonName
+          pass <- jsonPass
+        } yield service.create(name, pass)
       }
       catch {
-        case _: SQLException =>
-          println("Could not commit.")
-          dao.rollBack(sp)
+        case e: DMLException =>
+          println("Could not create 'users'.")
+          service.rollBack(sp)
       }
+
+      service.commit()
+
     }
+    catch {
+      case e1: ConnectionException => println(s"Could not to connect database.\n${e1.getMessage}")
+      case e2: SavepointException => println(s"Could not to get 'Savepoint'.\n${e2.getMessage}")
+      case e3: RollbackException => println(s"Could not to rollback\n${e3.getMessage}")
+      case e4: CommitException => println(s"Could not to commit\n${e4.getMessage}")
+    }
+    finally {
+      service.close()
+    }
+
     println("コミットしました。")
   }
 }

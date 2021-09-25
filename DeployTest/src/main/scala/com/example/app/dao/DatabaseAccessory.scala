@@ -1,56 +1,66 @@
 package com.example.app.dao
 
-import java.sql.{Connection, DriverManager, ResultSet, Savepoint}
+import java.sql.{Connection, DriverManager, ResultSet, SQLException, Savepoint}
 
-object DatabaseAccessory {
+class ConnectionException extends SQLException
+class CommitException extends SQLException
+class SavepointException extends SQLException
+class RollbackException extends SQLException
+class CloseException extends SQLException
+class DMLException extends SQLException
 
-  @throws[java.sql.SQLException]
-  def apply(url: String, username: String, password: String, autoCommit: Boolean): DatabaseAccessory ={
-    new DatabaseAccessory(url, username, password, autoCommit)
+abstract class DatabaseAccessory extends Cloneable{
+
+  protected val _url: String
+  protected val _username: String
+  protected val _password: String
+
+  protected val _driverName: String
+  protected val _autoCommit: Boolean
+  protected var _conn: Connection = _
+
+  @throws[ConnectionException]
+  final def setConnection(): Unit ={
+    Class.forName(_driverName)
+    _conn = DriverManager.getConnection(_url, _username, _password)
+    _conn.setAutoCommit(_autoCommit)
   }
 
-  @throws[java.sql.SQLException]
-  def apply(url: String, username: String, password: String): DatabaseAccessory ={
-    new DatabaseAccessory(url, username, password)
-  }
-}
+  @throws[CommitException]
+  final def commit(): Unit = _conn.commit()
 
-final class DatabaseAccessory private(url: String, username: String, password: String, autoCommit: Boolean = true)
-  extends Cloneable{
+  @throws[SavepointException]
+  final def setSavepoint(): Savepoint = _conn.setSavepoint()
 
-  require(url.nonEmpty && username.nonEmpty && password.nonEmpty)
+  @throws[RollbackException]
+  final def rollBack(): Unit = _conn.rollback()
 
-  private val driver: String = "com.mysql.jdbc.Driver"
-  Class.forName(driver)
+  @throws[RollbackException]
+  final def rollBack(sp: Savepoint): Unit = _conn.rollback(sp)
 
-  private val conn: Connection = DriverManager.getConnection(url, username, password)
+  @throws[CloseException]
+  final def close(): Unit = _conn.close()
 
-  conn.setAutoCommit(autoCommit)
-
-  @throws[java.sql.SQLException]
-  def commit(): Unit = conn.commit()
-
-  @throws[java.sql.SQLException]
-  def setSavepoint(): Savepoint = conn.setSavepoint()
-
-  @throws[java.sql.SQLException]
-  def rollBack(): Unit = conn.rollback()
-
-  @throws[java.sql.SQLException]
-  def rollBack(sp: Savepoint): Unit = conn.rollback(sp)
-
-  @throws[java.sql.SQLException]
-  def close(): Unit = conn.close()
-
-  @throws[java.sql.SQLException]
-  def executeUpdate(sql: String): Int ={
-    val ps = conn.prepareStatement(sql)
+  @throws[DMLException]
+  protected final def executeUpdate(sql: String): Int ={
+    val ps = _conn.prepareStatement(sql)
     ps.executeUpdate()
   }
 
-  @throws[java.sql.SQLException]
-  def executeQuery(sql: String): ResultSet ={
-    val ps = conn.prepareStatement(sql)
+  @throws[DMLException]
+  protected final def executeQuery(sql: String): ResultSet ={
+    val ps = _conn.prepareStatement(sql)
     ps.executeQuery()
   }
+}
+
+
+class MySQLAccessory(autoCommit: Boolean) extends DatabaseAccessory {
+
+  override protected val _url: String = "jdbc:mysql://localhost:3306/money_keep"
+  override protected val _username: String = "root"
+  override protected val _password: String = "Asd18894"
+
+  override protected val _driverName: String = "com.mysql.jdbc.Driver"
+  override protected val _autoCommit: Boolean = autoCommit
 }

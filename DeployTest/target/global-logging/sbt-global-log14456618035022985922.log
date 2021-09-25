@@ -1,0 +1,14 @@
+[debug] > Exec(all {file:/C:/Users/soroc/Documents/Scala-workspace/DeployTest/}deploytest/products {file:/C:/Users/soroc/Documents/Scala-workspace/DeployTest/}deploytest/test:products, None, None)
+[debug] Evaluating tasks: Compile / products, Test / products
+[debug] Running task... Cancel: Signal, check cycles: false, forcegc: true
+[info] compiling 2 Scala sources to C:\Users\soroc\Documents\Scala-workspace\DeployTest\target\scala-2.13\classes ...
+[warn] C:\Users\soroc\Documents\Scala-workspace\DeployTest\src\main\scala\com\example\app\api\home\EntryAPI.scala:61:81: A try without a catch or finally is equivalent to putting its body in a block; no exceptions are handled.
+[warn]     lazy val savepoint: Either[SQLException, Either[SQLException, Savepoint]] = try {
+[warn]                                                                                 ^
+[warn] one warning found
+[info] done compiling
+[debug] Forcing garbage collection...
+[success] Total time: 1 s, completed 2021/09/25 1:59:33
+[debug] > Exec(idea-shell, None, None)
+[debug] > Exec(, None, None)
+[debug] > Exec(idea-shell, None, None)
