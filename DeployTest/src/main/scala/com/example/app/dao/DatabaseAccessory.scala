@@ -2,12 +2,12 @@ package com.example.app.dao
 
 import java.sql.{Connection, DriverManager, ResultSet, SQLException, Savepoint}
 
-class ConnectionException extends SQLException
-class CommitException extends SQLException
-class SavepointException extends SQLException
-class RollbackException extends SQLException
-class CloseException extends SQLException
-class DMLException extends SQLException
+class ConnectionException(val exception: SQLException) extends SQLException
+class CommitException(val exception: SQLException) extends SQLException
+class SavepointException(val exception: SQLException) extends SQLException
+class RollbackException(val exception: SQLException) extends SQLException
+class CloseException(val exception: SQLException) extends SQLException
+class DMLException(val exception: SQLException) extends SQLException
 
 abstract class DatabaseAccessory extends Cloneable{
 
@@ -20,37 +20,72 @@ abstract class DatabaseAccessory extends Cloneable{
   protected var _conn: Connection = _
 
   @throws[ConnectionException]
-  final def setConnection(): Unit ={
+  final def setConnection(): Unit = try {
+
     Class.forName(_driverName)
     _conn = DriverManager.getConnection(_url, _username, _password)
     _conn.setAutoCommit(_autoCommit)
   }
+  catch {
+    case e: SQLException => throw new ConnectionException(e)
+  }
 
   @throws[CommitException]
-  final def commit(): Unit = _conn.commit()
+  final def commit(): Unit = try{
+    _conn.commit()
+  }
+  catch {
+    case e: SQLException => throw new CommitException(e)
+  }
 
   @throws[SavepointException]
-  final def setSavepoint(): Savepoint = _conn.setSavepoint()
+  final def setSavepoint(): Savepoint = try{
+    _conn.setSavepoint()
+  }
+  catch {
+    case e: SQLException => throw new SavepointException(e)
+  }
 
   @throws[RollbackException]
-  final def rollBack(): Unit = _conn.rollback()
+  final def rollBack(): Unit = try{
+    _conn.rollback()
+  }
+  catch {
+    case e: SQLException => throw new RollbackException(e)
+  }
 
   @throws[RollbackException]
-  final def rollBack(sp: Savepoint): Unit = _conn.rollback(sp)
+  final def rollBack(sp: Savepoint): Unit = try {
+    _conn.rollback(sp)
+  }
+  catch {
+    case e: SQLException => throw new RollbackException(e)
+  }
 
   @throws[CloseException]
-  final def close(): Unit = _conn.close()
-
-  @throws[DMLException]
-  protected final def executeUpdate(sql: String): Int ={
-    val ps = _conn.prepareStatement(sql)
-    ps.executeUpdate()
+  final def close(): Unit = try{
+    _conn.close()
+  }
+  catch {
+    case e: SQLException => throw new CloseException(e)
   }
 
   @throws[DMLException]
-  protected final def executeQuery(sql: String): ResultSet ={
+  protected final def executeUpdate(sql: String): Int = try{
+    val ps = _conn.prepareStatement(sql)
+    ps.executeUpdate()
+  }
+  catch {
+    case e: SQLException => throw new DMLException(e)
+  }
+
+  @throws[DMLException]
+  protected final def executeQuery(sql: String): ResultSet = try{
     val ps = _conn.prepareStatement(sql)
     ps.executeQuery()
+  }
+  catch {
+    case e: SQLException => throw new DMLException(e)
   }
 }
 

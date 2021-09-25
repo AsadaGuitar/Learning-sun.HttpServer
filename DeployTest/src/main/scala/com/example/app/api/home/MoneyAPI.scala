@@ -1,7 +1,7 @@
 package com.example.app.api.home
 
 import com.example.app.api.APIServer.Request
-import com.example.app.dao.{CommitException, ConnectionException, DMLException, RollbackException, SavepointException}
+import com.example.app.dao.{CommitException, ConnectionException, RollbackException, SavepointException}
 import com.example.app.service._
 import org.json.JSONObject
 
@@ -57,17 +57,17 @@ object MoneyAPI {
 
       val sp = service.setSavepoint()
 
-      try {
-        for {
-          userId <- userIdJson
-          saving <- savingJson
-          wallet <- walletJson
-        } yield service.create(userId,saving,wallet)
-      }
-      catch {
-        case e: DMLException =>
-          println(e.getMessage)
-          service.rollBack(sp)
+      for {
+        userId <- userIdJson
+        saving <- savingJson
+        wallet <- walletJson
+      } yield {
+        service.create(userId,saving,wallet) match {
+          case Right(x) => x
+          case Left(e) =>
+            println(s"Could not create.\n${e.getMessage}")
+            service.rollBack(sp)
+        }
       }
 
       service.commit()

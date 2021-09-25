@@ -1,16 +1,36 @@
 package com.example.app.service
 
-import com.example.app.dao.{DatabaseAccessory, MySQLAccessory}
+import com.example.app.dao.{DMLException, DatabaseAccessory, MySQLAccessory}
 
-import java.sql.SQLException
+import java.sql.ResultSet
 
 trait MoneyService extends DatabaseAccessory{
 
-  @throws[SQLException]
-  def create(userId: Int, saving: Int, wallet: Int): Int ={
+  def readALLMoney(userId: Int): Either[DMLException,ResultSet] ={
+
+    val sqlFormat = "SELECT (saving + wallet) AS total FROM money WHERE user_id = %d;"
+    val sql = sqlFormat.format(userId)
+
+    try {
+      val rs = executeQuery(sql)
+      Right(rs)
+    }
+    catch {
+      case e: DMLException => Left(e)
+    }
+  }
+
+  @throws[DMLException]
+  def create(userId: Int, saving: Int, wallet: Int): Either[DMLException,Int] ={
     val sqlFormat = "INSERT INTO money(user_id, saving, wallet) VALUES(%d, %d, %d);"
     val sql = sqlFormat.format(userId, saving, wallet)
-    executeUpdate(sql)
+    try {
+      val rs = executeUpdate(sql)
+      Right(rs)
+    }
+    catch {
+      case e: DMLException => Left(e)
+    }
   }
 }
 
