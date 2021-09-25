@@ -4,7 +4,10 @@ import com.example.app.api.home.{EntryAPI, MoneyAPI}
 import com.sun.net.httpserver.{HttpExchange, HttpHandler, HttpServer}
 
 import java.io.IOException
-import java.net.{InetSocketAddress, URI}
+import java.net.InetSocketAddress
+import java.nio.charset.StandardCharsets
+import java.time.format.DateTimeFormatter
+import java.time.{ZoneOffset, ZonedDateTime}
 
 object APIServer {
 
@@ -35,19 +38,40 @@ object APIServer {
 
   final class APIHandler extends HttpHandler {
 
-    private def passHandle(uri: URI, method: RequestMethod, request: Request)
-    : Unit = uri.toString match {
-      case "/home/entry"  => method match {
-        case GET  => EntryAPI.get(request)
-        case POST => EntryAPI.post(request)
-        case _    =>
+    private def homeHandler(path: Array[String], method: RequestMethod, request: Request)
+    : Option[String] = path match {
+      case x if x.isEmpty => None
+      case x => x.head match {
+        case "entry" => method match {
+          case GET =>
+            EntryAPI.get()
+            None
+          case POST =>
+            EntryAPI.post(request)
+            None
+        }
+        case "money" => method match {
+          case GET => if (x.tail.isEmpty) {
+            None
+          }
+          else {
+            val child = x.tail.head
+            if (child.matches("\\d{1,11}")) {
+              MoneyAPI.get(child.toInt)
+            }
+            else {
+              None
+            }
+          }
+          case POST =>
+            MoneyAPI.post(request)
+            None
+          case PUT =>
+            MoneyAPI.put(request)
+            None
+        }
       }
-      case "/home/money"  => method match {
-        case GET  => MoneyAPI.get(request)
-        case POST => MoneyAPI.post(request)
-        case PUT  => MoneyAPI.put(request)
-      }
-      case _ =>
+      case _ => None
     }
 
     override def handle(exchange: HttpExchange): Unit = {
@@ -90,9 +114,28 @@ object APIServer {
       println("\nRequestBody: ")
       requestBody.foreach(x => println(x))
 
-      import java.nio.charset.StandardCharsets
-      import java.time.format.DateTimeFormatter
-      import java.time.{ZoneOffset, ZonedDateTime}
+
+      //パスを取得
+      val url = requestURI.getPath
+      val paths = url.split("/").tail
+      println(s"url is $url\npaths is ${paths.mkString("Array(", ", ", ")")}")
+
+      if (paths.isEmpty) {
+        println("Could not path.")
+        return
+      }
+      if (paths.head != "home") {
+        println("path is illegal.")
+        return
+      }
+
+      val msg: Option[String] =
+        homeHandler(paths.tail, requestMethod, Request(requestHeader,requestBody))
+
+      if (msg.isEmpty) {
+        println("msg is nothing")
+        return
+      }
 
       //レスポンスヘッダを作成
       val resHeaders = exchange.getResponseHeaders
@@ -109,7 +152,7 @@ object APIServer {
         + System.getProperty("java.vm.version") + ")")
 
       //レスポンスボディ
-      val resBody = "foo"
+      val resBody = msg.get
 
       // レスポンスヘッダを送信
       val statusCode = 200
@@ -119,8 +162,6 @@ object APIServer {
       // レスポンスボディを送信
       val os = exchange.getResponseBody
       os.write(resBody.getBytes)
-
-      passHandle(requestURI, requestMethod, Request(requestHeader,requestBody))
     }
 
   }

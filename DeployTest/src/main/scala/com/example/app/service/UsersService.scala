@@ -6,8 +6,7 @@ trait UsersService extends DatabaseAccessory {
 
   @throws[java.sql.SQLException]
   def create(name: String, pass: String): Int ={
-    val sqlFormat = "INSERT INTO users(name, password) VALUES('%s', '%s');"
-    val sql = sqlFormat.format(name, pass)
+    val sql = s"INSERT INTO users(name, password) VALUES('$name', '$pass');"
     executeUpdate(sql)
   }
 }

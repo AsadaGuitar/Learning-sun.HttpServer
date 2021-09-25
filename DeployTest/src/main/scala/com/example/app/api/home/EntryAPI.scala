@@ -10,8 +10,7 @@ object EntryAPI {
 
   lazy val service: UsersService = new UserServiceMySQL
 
-  def get(request: Request): Unit ={
-
+  def get(): Unit ={
   }
 
   @throws[java.sql.SQLException]

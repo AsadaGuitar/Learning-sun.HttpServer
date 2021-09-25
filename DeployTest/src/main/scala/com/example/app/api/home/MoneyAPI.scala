@@ -9,8 +9,30 @@ object MoneyAPI {
 
   lazy val service: MoneyService = new MoneyServiceMySQL
 
-  def get(request: Request): Unit ={
+  def get(userId: Int): Option[String] ={
 
+    println("start MoneyAPI.get()")
+
+    try {
+
+      service.setConnection()
+
+      service.readALLMoney(userId) match {
+        case Right(rs) =>
+          rs.next()
+          val total = rs.getString("total")
+          Some(total)
+
+        case Left(e) =>
+          println(s"Could not read.\n${e.getMessage}")
+          None
+      }
+    }
+    catch {
+      case e: ConnectionException =>
+        println(s"Could not to connect database.\n${e.getMessage}")
+        None
+    }
   }
 
   def post(request: Request): Unit = {

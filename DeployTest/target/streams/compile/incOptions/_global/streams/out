@@ -1,35 +1,32 @@
 [debug] Created transactional ClassFileManager with tempDir = C:\Users\soroc\Documents\Scala-workspace\DeployTest\target\scala-2.13\classes.bak
 [debug] About to delete class files:
-[debug] 	ConnectionException.class
-[debug] 	RollbackException.class
-[debug] 	MoneyAPI.class
-[debug] 	SavepointException.class
-[debug] 	MoneyAPI$.class
-[debug] 	MySQLAccessory.class
-[debug] 	DMLException.class
-[debug] 	DatabaseAccessory.class
-[debug] 	CommitException.class
-[debug] 	CloseException.class
+[debug] 	APIServer$GET$.class
+[debug] 	APIServer$.class
+[debug] 	APIServer$PUT$.class
+[debug] 	APIServer.class
+[debug] 	APIServer$APIHandler.class
+[debug] 	APIServer$Request.class
+[debug] 	APIServer$POST$.class
+[debug] 	APIServer$RequestMethod.class
+[debug] 	APIServer$Request$.class
 [debug] We backup class files:
-[debug] 	ConnectionException.class
-[debug] 	RollbackException.class
-[debug] 	MoneyAPI.class
-[debug] 	SavepointException.class
-[debug] 	MoneyAPI$.class
-[debug] 	MySQLAccessory.class
-[debug] 	DMLException.class
-[debug] 	DatabaseAccessory.class
-[debug] 	CommitException.class
-[debug] 	CloseException.class
+[debug] 	APIServer$GET$.class
+[debug] 	APIServer$.class
+[debug] 	APIServer$PUT$.class
+[debug] 	APIServer.class
+[debug] 	APIServer$APIHandler.class
+[debug] 	APIServer$Request.class
+[debug] 	APIServer$POST$.class
+[debug] 	APIServer$RequestMethod.class
+[debug] 	APIServer$Request$.class
 [debug] Registering generated classes:
-[debug] 	ConnectionException.class
-[debug] 	RollbackException.class
-[debug] 	MoneyAPI.class
-[debug] 	SavepointException.class
-[debug] 	MoneyAPI$.class
-[debug] 	MySQLAccessory.class
-[debug] 	DMLException.class
-[debug] 	DatabaseAccessory.class
-[debug] 	CommitException.class
-[debug] 	CloseException.class
+[debug] 	APIServer$GET$.class
+[debug] 	APIServer$.class
+[debug] 	APIServer$PUT$.class
+[debug] 	APIServer.class
+[debug] 	APIServer$APIHandler.class
+[debug] 	APIServer$Request.class
+[debug] 	APIServer$POST$.class
+[debug] 	APIServer$RequestMethod.class
+[debug] 	APIServer$Request$.class
 [debug] Removing the temporary directory used for backing up class files: C:\Users\soroc\Documents\Scala-workspace\DeployTest\target\scala-2.13\classes.bak

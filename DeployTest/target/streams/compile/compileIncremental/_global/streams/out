@@ -2,106 +2,37 @@
 [debug] IncrementalCompile.incrementalCompile
 [debug] previous = Stamps for: 28 products, 7 sources, 2 libraries
 [debug] current source = Set(${BASE}/src/main/scala/com/example/app/service/MoneyService.scala, ${BASE}/src/main/scala/com/example/app/api/APIServer.scala, ${BASE}/src/main/scala/Main.scala, ${BASE}/src/main/scala/com/example/app/dao/DatabaseAccessory.scala, ${BASE}/src/main/scala/com/example/app/service/UsersService.scala, ${BASE}/src/main/scala/com/example/app/api/home/MoneyAPI.scala, ${BASE}/src/main/scala/com/example/app/api/home/EntryAPI.scala)
-[debug] > initialChanges = InitialChanges(Changes(added = Set(), removed = Set(), changed = Set(${BASE}/src/main/scala/com/example/app/api/home/MoneyAPI.scala, ${BASE}/src/main/scala/com/example/app/dao/DatabaseAccessory.scala), unmodified = ...),Set(),Set(),API Changes: Set())
+[debug] > initialChanges = InitialChanges(Changes(added = Set(), removed = Set(), changed = Set(${BASE}/src/main/scala/com/example/app/api/APIServer.scala), unmodified = ...),Set(),Set(),API Changes: Set())
 [debug] 
 [debug] Initial source changes:
 [debug] 	removed: Set()
 [debug] 	added: Set()
-[debug] 	modified: Set(${BASE}/src/main/scala/com/example/app/api/home/MoneyAPI.scala, ${BASE}/src/main/scala/com/example/app/dao/DatabaseAccessory.scala)
+[debug] 	modified: Set(${BASE}/src/main/scala/com/example/app/api/APIServer.scala)
 [debug] Invalidated products: Set()
 [debug] External API changes: API Changes: Set()
 [debug] Modified binary dependencies: Set()
-[debug] Initial directly invalidated classes: Set(com.example.app.dao.ConnectionException, com.example.app.dao.CommitException, com.example.app.api.home.MoneyAPI, com.example.app.dao.DMLException, com.example.app.dao.SavepointException, com.example.app.dao.RollbackException, com.example.app.dao.CloseException, com.example.app.dao.MySQLAccessory, com.example.app.dao.DatabaseAccessory)
+[debug] Initial directly invalidated classes: Set(com.example.app.api.APIServer.POST, com.example.app.api.APIServer.APIHandler, com.example.app.api.APIServer, com.example.app.api.APIServer.GET, com.example.app.api.APIServer.PUT, com.example.app.api.APIServer.RequestMethod, com.example.app.api.APIServer.Request)
 [debug] Sources indirectly invalidated by:
 [debug] 	product: Set()
 [debug] 	binary dep: Set()
 [debug] 	external source: Set()
-[debug] All initially invalidated classes: Set(com.example.app.dao.ConnectionException, com.example.app.dao.CommitException, com.example.app.api.home.MoneyAPI, com.example.app.dao.DMLException, com.example.app.dao.SavepointException, com.example.app.dao.RollbackException, com.example.app.dao.CloseException, com.example.app.dao.MySQLAccessory, com.example.app.dao.DatabaseAccessory)
-[debug] All initially invalidated sources:Set(${BASE}/src/main/scala/com/example/app/api/home/MoneyAPI.scala, ${BASE}/src/main/scala/com/example/app/dao/DatabaseAccessory.scala)
-[debug] Initial set of included nodes: com.example.app.dao.ConnectionException, com.example.app.dao.CommitException, com.example.app.api.home.MoneyAPI, com.example.app.dao.DMLException, com.example.app.dao.SavepointException, com.example.app.dao.RollbackException, com.example.app.dao.CloseException, com.example.app.dao.MySQLAccessory, com.example.app.dao.DatabaseAccessory
-[debug] Including com.example.app.service.MoneyServiceMySQL by com.example.app.dao.MySQLAccessory
-[debug] Including com.example.app.service.UserServiceMySQL by com.example.app.dao.MySQLAccessory
-[debug] Including com.example.app.service.MoneyService by com.example.app.dao.DatabaseAccessory
-[debug] Including com.example.app.service.UsersService by com.example.app.dao.DatabaseAccessory
+[debug] All initially invalidated classes: Set(com.example.app.api.APIServer.POST, com.example.app.api.APIServer.APIHandler, com.example.app.api.APIServer, com.example.app.api.APIServer.GET, com.example.app.api.APIServer.PUT, com.example.app.api.APIServer.RequestMethod, com.example.app.api.APIServer.Request)
+[debug] All initially invalidated sources:Set(${BASE}/src/main/scala/com/example/app/api/APIServer.scala)
+[debug] Initial set of included nodes: com.example.app.api.APIServer.POST, com.example.app.api.APIServer.APIHandler, com.example.app.api.APIServer, com.example.app.api.APIServer.GET, com.example.app.api.APIServer.PUT, com.example.app.api.APIServer.RequestMethod, com.example.app.api.APIServer.Request
 [debug] compilation cycle 1
-[info] compiling 2 Scala sources to C:\Users\soroc\Documents\Scala-workspace\DeployTest\target\scala-2.13\classes ...
+[info] compiling 1 Scala source to C:\Users\soroc\Documents\Scala-workspace\DeployTest\target\scala-2.13\classes ...
 [debug] Getting org.scala-sbt:compiler-bridge_2.13:1.5.7:compile for Scala 2.13.6
-[debug] [zinc] Running cached compiler 60b136fd for Scala compiler version 2.13.6
+[debug] [zinc] Running cached compiler 1f04cb02 for Scala compiler version 2.13.6
 [debug] [zinc] The Scala compiler is invoked with:
 [debug] 	-bootclasspath
 [debug] 	C:\Users\soroc\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\scala-lang\scala-library\2.13.6\scala-library-2.13.6.jar
 [debug] 	-classpath
 [debug] 	C:\Users\soroc\Documents\Scala-workspace\DeployTest\target\scala-2.13\classes;C:\Users\soroc\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\typelevel\cats-effect_2.13\3.2.9\cats-effect_2.13-3.2.9.jar;C:\Users\soroc\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\json\json\20210307\json-20210307.jar;C:\Users\soroc\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\mysql\mysql-connector-java\5.1.12\mysql-connector-java-5.1.12.jar;C:\Users\soroc\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\typelevel\cats-effect-kernel_2.13\3.2.9\cats-effect-kernel_2.13-3.2.9.jar;C:\Users\soroc\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\typelevel\cats-effect-std_2.13\3.2.9\cats-effect-std_2.13-3.2.9.jar;C:\Users\soroc\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\typelevel\cats-core_2.13\2.6.1\cats-core_2.13-2.6.1.jar;C:\Users\soroc\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\typelevel\cats-kernel_2.13\2.6.1\cats-kernel_2.13-2.6.1.jar;C:\Users\soroc\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\typelevel\simulacrum-scalafix-annotations_2.13\0.5.4\simulacrum-scalafix-annotations_2.13-0.5.4.jar
-[debug] Invalidating (transitively) by inheritance from com.example.app.dao.CloseException...
-[debug] Initial set of included nodes: com.example.app.dao.CloseException
-[debug] Invalidated by transitive inheritance dependency: Set(com.example.app.dao.CloseException)
-[debug] Change NamesChange(com.example.app.dao.CloseException,ModifiedNames(changes = UsedName(exception,[Default]), UsedName(com;example;app;dao;CloseException;init;,[Default]))) invalidates 1 classes due to The com.example.app.dao.CloseException has the following regular definitions changed:
-[debug] 	UsedName(exception,[Default]), UsedName(com;example;app;dao;CloseException;init;,[Default]).
-[debug]   > by transitive inheritance: Set(com.example.app.dao.CloseException)
-[debug]   > 
-[debug]   > 
-[debug]         
-[debug] Invalidating (transitively) by inheritance from com.example.app.dao.DMLException...
-[debug] Initial set of included nodes: com.example.app.dao.DMLException
-[debug] Invalidated by transitive inheritance dependency: Set(com.example.app.dao.DMLException)
-[debug] None of the modified names appears in source file of com.example.app.api.home.MoneyAPI. This dependency is not being considered for invalidation.
-[debug] None of the modified names appears in source file of com.example.app.service.MoneyService. This dependency is not being considered for invalidation.
-[debug] None of the modified names appears in source file of com.example.app.api.home.EntryAPI. This dependency is not being considered for invalidation.
-[debug] Change NamesChange(com.example.app.dao.DMLException,ModifiedNames(changes = UsedName(com;example;app;dao;DMLException;init;,[Default]), UsedName(exception,[Default]))) invalidates 1 classes due to The com.example.app.dao.DMLException has the following regular definitions changed:
-[debug] 	UsedName(com;example;app;dao;DMLException;init;,[Default]), UsedName(exception,[Default]).
-[debug]   > by transitive inheritance: Set(com.example.app.dao.DMLException)
-[debug]   > 
-[debug]   > 
-[debug]         
-[debug] Invalidating (transitively) by inheritance from com.example.app.dao.CommitException...
-[debug] Initial set of included nodes: com.example.app.dao.CommitException
-[debug] Invalidated by transitive inheritance dependency: Set(com.example.app.dao.CommitException)
-[debug] None of the modified names appears in source file of com.example.app.api.home.MoneyAPI. This dependency is not being considered for invalidation.
-[debug] None of the modified names appears in source file of com.example.app.api.home.EntryAPI. This dependency is not being considered for invalidation.
-[debug] Change NamesChange(com.example.app.dao.CommitException,ModifiedNames(changes = UsedName(com;example;app;dao;CommitException;init;,[Default]), UsedName(exception,[Default]))) invalidates 1 classes due to The com.example.app.dao.CommitException has the following regular definitions changed:
-[debug] 	UsedName(com;example;app;dao;CommitException;init;,[Default]), UsedName(exception,[Default]).
-[debug]   > by transitive inheritance: Set(com.example.app.dao.CommitException)
-[debug]   > 
-[debug]   > 
-[debug]         
-[debug] Invalidating (transitively) by inheritance from com.example.app.dao.RollbackException...
-[debug] Initial set of included nodes: com.example.app.dao.RollbackException
-[debug] Invalidated by transitive inheritance dependency: Set(com.example.app.dao.RollbackException)
-[debug] None of the modified names appears in source file of com.example.app.api.home.MoneyAPI. This dependency is not being considered for invalidation.
-[debug] None of the modified names appears in source file of com.example.app.api.home.EntryAPI. This dependency is not being considered for invalidation.
-[debug] Change NamesChange(com.example.app.dao.RollbackException,ModifiedNames(changes = UsedName(com;example;app;dao;RollbackException;init;,[Default]), UsedName(exception,[Default]))) invalidates 1 classes due to The com.example.app.dao.RollbackException has the following regular definitions changed:
-[debug] 	UsedName(com;example;app;dao;RollbackException;init;,[Default]), UsedName(exception,[Default]).
-[debug]   > by transitive inheritance: Set(com.example.app.dao.RollbackException)
-[debug]   > 
-[debug]   > 
-[debug]         
-[debug] Invalidating (transitively) by inheritance from com.example.app.dao.ConnectionException...
-[debug] Initial set of included nodes: com.example.app.dao.ConnectionException
-[debug] Invalidated by transitive inheritance dependency: Set(com.example.app.dao.ConnectionException)
-[debug] None of the modified names appears in source file of com.example.app.api.home.MoneyAPI. This dependency is not being considered for invalidation.
-[debug] None of the modified names appears in source file of com.example.app.api.home.EntryAPI. This dependency is not being considered for invalidation.
-[debug] Change NamesChange(com.example.app.dao.ConnectionException,ModifiedNames(changes = UsedName(exception,[Default]), UsedName(com;example;app;dao;ConnectionException;init;,[Default]))) invalidates 1 classes due to The com.example.app.dao.ConnectionException has the following regular definitions changed:
-[debug] 	UsedName(exception,[Default]), UsedName(com;example;app;dao;ConnectionException;init;,[Default]).
-[debug]   > by transitive inheritance: Set(com.example.app.dao.ConnectionException)
-[debug]   > 
-[debug]   > 
-[debug]         
-[debug] Invalidating (transitively) by inheritance from com.example.app.dao.SavepointException...
-[debug] Initial set of included nodes: com.example.app.dao.SavepointException
-[debug] Invalidated by transitive inheritance dependency: Set(com.example.app.dao.SavepointException)
-[debug] None of the modified names appears in source file of com.example.app.api.home.MoneyAPI. This dependency is not being considered for invalidation.
-[debug] None of the modified names appears in source file of com.example.app.api.home.EntryAPI. This dependency is not being considered for invalidation.
-[debug] Change NamesChange(com.example.app.dao.SavepointException,ModifiedNames(changes = UsedName(exception,[Default]), UsedName(com;example;app;dao;SavepointException;init;,[Default]))) invalidates 1 classes due to The com.example.app.dao.SavepointException has the following regular definitions changed:
-[debug] 	UsedName(exception,[Default]), UsedName(com;example;app;dao;SavepointException;init;,[Default]).
-[debug]   > by transitive inheritance: Set(com.example.app.dao.SavepointException)
-[debug]   > 
-[debug]   > 
-[debug]         
 [debug] New invalidations:
 [debug] Initial set of included nodes: 
 [debug] Previously invalidated, but (transitively) depend on new invalidations:
 [debug] Final step, transitive dependencies:
 [debug] 	Set()
 [debug] No classes were invalidated.
-[debug] Scala compilation took 0.3859375 s
+[debug] Scala compilation took 0.5376651 s
 [info] done compiling

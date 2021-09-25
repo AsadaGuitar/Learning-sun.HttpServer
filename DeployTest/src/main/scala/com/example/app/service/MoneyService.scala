@@ -8,8 +8,7 @@ trait MoneyService extends DatabaseAccessory{
 
   def readALLMoney(userId: Int): Either[DMLException,ResultSet] ={
 
-    val sqlFormat = "SELECT (saving + wallet) AS total FROM money WHERE user_id = %d;"
-    val sql = sqlFormat.format(userId)
+    val sql = s"SELECT (saving + wallet) AS total FROM money WHERE user_id = $userId;"
 
     try {
       val rs = executeQuery(sql)
@@ -22,8 +21,9 @@ trait MoneyService extends DatabaseAccessory{
 
   @throws[DMLException]
   def create(userId: Int, saving: Int, wallet: Int): Either[DMLException,Int] ={
-    val sqlFormat = "INSERT INTO money(user_id, saving, wallet) VALUES(%d, %d, %d);"
-    val sql = sqlFormat.format(userId, saving, wallet)
+
+    val sql = s"INSERT INTO money(user_id, saving, wallet) VALUES($userId, $saving, $wallet);"
+
     try {
       val rs = executeUpdate(sql)
       Right(rs)
