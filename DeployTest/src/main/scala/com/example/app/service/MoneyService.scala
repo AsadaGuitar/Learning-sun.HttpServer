@@ -6,6 +6,7 @@ import java.sql.ResultSet
 
 trait MoneyService extends DatabaseAccessory{
 
+  @throws[DMLException]
   def readALLMoney(userId: Int): Either[DMLException,ResultSet] ={
 
     val sql = s"SELECT (saving + wallet) AS total FROM money WHERE user_id = $userId;"
