@@ -1,13 +1,2 @@
 [debug] Acquiring lock on file C:\Users\soroc\Documents\Scala-workspace\DeployTest\project\target\.sbt-compilation-infos\deploytest-compile\.sbt-idea-lock ...
-[warn] C:\Users\soroc\Documents\Scala-workspace\DeployTest\src\main\scala\com\example\app\api\APIServer.scala:45:25: match may not be exhaustive.
-[warn] It would fail on the following input: PUT
-[warn]         case "entry" => method match {
-[warn]                         ^
-[warn] C:\Users\soroc\Documents\Scala-workspace\DeployTest\src\main\scala\com\example\app\api\APIServer.scala:44:12: patterns after a variable pattern cannot match (SLS 8.1.1)
-[warn]       case x => x.head match {
-[warn]            ^
-[warn] C:\Users\soroc\Documents\Scala-workspace\DeployTest\src\main\scala\com\example\app\api\APIServer.scala:74:17: unreachable code due to variable pattern 'x' on line 44
-[warn]       case _ => None
-[warn]                 ^
-[warn] three warnings found
 [debug] Releasing lock on file C:\Users\soroc\Documents\Scala-workspace\DeployTest\project\target\.sbt-compilation-infos\deploytest-compile\.sbt-idea-lock.

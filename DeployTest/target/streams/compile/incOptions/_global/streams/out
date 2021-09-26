@@ -1,32 +1,24 @@
 [debug] Created transactional ClassFileManager with tempDir = C:\Users\soroc\Documents\Scala-workspace\DeployTest\target\scala-2.13\classes.bak
 [debug] About to delete class files:
-[debug] 	APIServer$GET$.class
-[debug] 	APIServer$.class
-[debug] 	APIServer$PUT$.class
-[debug] 	APIServer.class
-[debug] 	APIServer$APIHandler.class
-[debug] 	APIServer$Request.class
-[debug] 	APIServer$POST$.class
-[debug] 	APIServer$RequestMethod.class
-[debug] 	APIServer$Request$.class
+[debug] 	CostRepositoryMySQL.class
+[debug] 	CostRepository.class
 [debug] We backup class files:
-[debug] 	APIServer$GET$.class
-[debug] 	APIServer$.class
-[debug] 	APIServer$PUT$.class
-[debug] 	APIServer.class
-[debug] 	APIServer$APIHandler.class
-[debug] 	APIServer$Request.class
-[debug] 	APIServer$POST$.class
-[debug] 	APIServer$RequestMethod.class
-[debug] 	APIServer$Request$.class
+[debug] 	CostRepositoryMySQL.class
+[debug] 	CostRepository.class
 [debug] Registering generated classes:
-[debug] 	APIServer$GET$.class
-[debug] 	APIServer$.class
-[debug] 	APIServer$PUT$.class
-[debug] 	APIServer.class
-[debug] 	APIServer$APIHandler.class
-[debug] 	APIServer$Request.class
-[debug] 	APIServer$POST$.class
-[debug] 	APIServer$RequestMethod.class
-[debug] 	APIServer$Request$.class
+[debug] 	CostRepositoryMySQL.class
+[debug] 	CostRepository.class
+[debug] About to delete class files:
+[debug] 	CostRepositoryMySQL.class
+[debug] 	CostRepository.class
+[debug] 	CostServiceMySQL.class
+[debug] 	CostService.class
+[debug] We backup class files:
+[debug] 	CostServiceMySQL.class
+[debug] 	CostService.class
+[debug] Registering generated classes:
+[debug] 	CostRepositoryMySQL.class
+[debug] 	CostRepository.class
+[debug] 	CostServiceMySQL.class
+[debug] 	CostService.class
 [debug] Removing the temporary directory used for backing up class files: C:\Users\soroc\Documents\Scala-workspace\DeployTest\target\scala-2.13\classes.bak

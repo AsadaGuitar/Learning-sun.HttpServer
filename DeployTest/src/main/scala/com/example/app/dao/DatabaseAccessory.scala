@@ -8,6 +8,7 @@ class SavepointException(val exception: SQLException) extends SQLException
 class RollbackException(val exception: SQLException) extends SQLException
 class CloseException(val exception: SQLException) extends SQLException
 class DMLException(val exception: SQLException) extends SQLException
+class ResultSetException(val exception: Exception) extends SQLException
 
 abstract class DatabaseAccessory extends Cloneable{
 

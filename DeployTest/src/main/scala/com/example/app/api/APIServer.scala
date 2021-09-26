@@ -1,6 +1,6 @@
 package com.example.app.api
 
-import com.example.app.api.home.{EntryAPI, MoneyAPI}
+import com.example.app.api.home.{CostAPI, EntryAPI, MoneyAPI}
 import com.sun.net.httpserver.{HttpExchange, HttpHandler, HttpServer}
 
 import java.io.IOException
@@ -49,6 +49,7 @@ object APIServer {
           case POST =>
             EntryAPI.post(request)
             None
+          case PUT => None
         }
         case "money" => method match {
           case GET => if (x.tail.isEmpty) {
@@ -63,15 +64,17 @@ object APIServer {
               None
             }
           }
-          case POST =>
-            MoneyAPI.post(request)
-            None
+          case POST => MoneyAPI.post(request)
           case PUT =>
             MoneyAPI.put(request)
             None
         }
+        case "costs" => method match {
+          case GET => CostAPI.get(request)
+          case POST => CostAPI.post(request)
+          case PUT => None
+        }
       }
-      case _ => None
     }
 
     override def handle(exchange: HttpExchange): Unit = {
