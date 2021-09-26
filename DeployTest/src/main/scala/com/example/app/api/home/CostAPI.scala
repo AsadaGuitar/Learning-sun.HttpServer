@@ -1,21 +1,20 @@
 package com.example.app.api.home
 
 import com.example.app.api.APIServer.Request
-import com.example.app.api.home.MoneyAPI.jsonIntParam
 import com.example.app.domain.Cost
 import com.example.app.service.{CostService, CostServiceMySQL}
 
-object CostAPI {
+object CostAPI extends APIUtil {
 
   private lazy val service: CostService = new CostServiceMySQL
 
   def get(implicit request: Request): Option[String] ={
 
-    val userIdJson = jsonIntParam(param = "user_id", _ => true)
+    val userIdJson = jsonParam(param = "user_id", _ => true)(_.toInt)
     if (userIdJson.isEmpty) return Some("Could not get 'user_id'.")
     println(s"user_id = ${userIdJson.get}")
 
-    val monthJson   = jsonIntParam(param = "month", _ => true)
+    val monthJson   = jsonParam(param = "month", _ => true)(_.toInt)
     if (monthJson.isEmpty) return Some("Could not get 'month'.")
     println(s"month = ${monthJson.get}")
 
@@ -31,16 +30,16 @@ object CostAPI {
 
   def post(implicit request: Request): Option[String] ={
 
-    val userIdJson = jsonIntParam(param = "user_id", _ => true)
+    val userIdJson = jsonParam(param = "user_id", _ => true)(_.toInt)
     if (userIdJson.isEmpty) return Some("Could not get 'user_id'.")
 
-    val monthJson   = jsonIntParam(param = "month", _ => true)
+    val monthJson   = jsonParam(param = "month", _ => true)(_.toInt)
     if (monthJson.isEmpty) return Some("Could not get 'month'.")
 
-    val rentJson    = jsonIntParam(param = "rent", _ => true)
-    val cardJson    = jsonIntParam(param = "card", _ => true)
-    val otherJson   = jsonIntParam(param = "other", _ => true)
-    val friendsJson = jsonIntParam(param = "friends", _ => true)
+    val rentJson    = jsonParam(param = "rent", _ => true)(_.toInt)
+    val cardJson    = jsonParam(param = "card", _ => true)(_.toInt)
+    val otherJson   = jsonParam(param = "other", _ => true)(_.toInt)
+    val friendsJson = jsonParam(param = "friends", _ => true)(_.toInt)
 
     val cost =
       new Cost(userIdJson.get, rentJson, cardJson, otherJson, friendsJson, monthJson.get)

@@ -10,13 +10,16 @@ trait APIUtil {
     req <- request.body
   } yield new JSONObject(req)
 
-  def jsonIntParam(param: String, filter: String => Boolean)(implicit request: Request)
-  : Option[Int] = for {
+  def jsonParam[T](param: String, filter: String => Boolean)
+                  (exchange: String => T)
+                  (implicit request: Request)
+  : Option[T] = for {
     x <- reqJson(request).map(_.get(param).toString)
     if x.nonEmpty && filter(x)
-  } yield x.toInt
+  } yield exchange(x)
 
-  def jsonStrParam(param: String, filter: String => Boolean)(implicit request: Request)
+  def jsonStrParam(param: String, filter: String => Boolean)
+                  (implicit request: Request)
   : Option[String] = for {
     x <- reqJson(request).map(_.get(param).toString)
     if x.nonEmpty && filter(x)

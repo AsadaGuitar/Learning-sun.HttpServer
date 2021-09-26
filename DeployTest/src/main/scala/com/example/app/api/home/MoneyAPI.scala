@@ -14,13 +14,13 @@ object MoneyAPI extends APIUtil {
 
     println("start MoneyAPI.post()")
 
-    val userIdJson = jsonIntParam(param = "id", _.matches("\\d{1,4}"))
+    val userIdJson = jsonParam(param = "id", _.matches("\\d{1,4}"))(_.toInt)
     if(userIdJson.isEmpty) return Some("Could not get 'user_id'.")
 
-    val savingJson = jsonIntParam(param = "saving", _.matches("\\d{3,10"))
+    val savingJson = jsonParam(param = "saving", _.matches("\\d{3,10"))(_.toInt)
     if(savingJson.isEmpty) return Some("Could not get 'saving'.")
 
-    val walletJson = jsonIntParam(param = "wallet", _.matches("\\d{1,6}"))
+    val walletJson = jsonParam(param = "wallet", _.matches("\\d{1,6}"))(_.toInt)
     if(walletJson.isEmpty) return Some("Could not get 'wallet'.")
 
     for {
