@@ -1,18 +1,24 @@
 package com.example.app.repository
 
-import com.example.app.dao.{DMLException, DatabaseAccessory, MySQLAccessory}
+import com.example.app.session.SessionFactory
+import com.example.app.dao.{DatabaseAccessory, MySQLAccessory}
 import com.example.app.domain.User
+import org.hibernate.HibernateException
 
 trait UserRepository extends DatabaseAccessory {
 
-  protected def create(user: User): Either[DMLException, Int] ={
-    val sql = s"INSERT INTO users(name, password) VALUES('${user.name}', '${user.pass}');"
-    try {
-      Right(executeUpdate(sql))
-    }
-    catch {
-      case e: DMLException => Left(e)
-    }
+  protected def create(user: User): Either[HibernateException, Unit] = try {
+    //session
+    val session = SessionFactory.getSessionFactory.openSession()
+    //insert
+    session.beginTransaction()
+    session.save(user)
+    //commit
+    def commit(): Unit = session.getTransaction.commit()
+    Right(commit())
+  }
+  catch{
+    case e: HibernateException => Left(e)
   }
 }
 

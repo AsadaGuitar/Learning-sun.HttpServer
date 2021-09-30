@@ -1,0 +1,14 @@
+[debug] > Exec(all {file:/C:/Users/soroc/Documents/Scala-workspace/DeployTest/}deploytest/products {file:/C:/Users/soroc/Documents/Scala-workspace/DeployTest/}deploytest/test:products, None, None)
+[debug] Evaluating tasks: Compile / products, Test / products
+[debug] Running task... Cancel: Signal, check cycles: false, forcegc: true
+[info] compiling 4 Scala sources to C:\Users\soroc\Documents\Scala-workspace\DeployTest\target\scala-2.13\classes ...
+[info] done compiling
+[info] compiling 4 Scala sources to C:\Users\soroc\Documents\Scala-workspace\DeployTest\target\scala-2.13\classes ...
+[info] done compiling
+[info] compiling 3 Scala sources to C:\Users\soroc\Documents\Scala-workspace\DeployTest\target\scala-2.13\classes ...
+[info] done compiling
+[debug] Forcing garbage collection...
+[success] Total time: 3 s, completed 2021/09/30 22:14:44
+[debug] > Exec(idea-shell, None, None)
+[debug] > Exec(, None, None)
+[debug] > Exec(idea-shell, None, None)

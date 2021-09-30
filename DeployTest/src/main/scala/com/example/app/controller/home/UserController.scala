@@ -1,15 +1,15 @@
-package com.example.app.api.home
+package com.example.app.controller.home
 
 import com.example.app.api.APIServer.Request
+import com.example.app.controller.APIUtil
 import com.example.app.domain.User
 import com.example.app.service.{UserServiceMySQL, UsersService}
 
-
-object EntryAPI extends APIUtil {
+object UserController extends APIUtil {
 
   private lazy val service: UsersService = new UserServiceMySQL
 
-  def get(): Unit ={
+  def get(): Unit = {
   }
 
   def post(implicit request: Request): Option[String] = {
@@ -25,10 +25,10 @@ object EntryAPI extends APIUtil {
       name <- jsonName
       pass <- jsonPass
     } yield {
-
-      val user = new User(None, name, pass)
+      val user = new User
+      user.setName(name)
+      user.setPass(pass)
       service.insert(user)
     }
   }
 }
-

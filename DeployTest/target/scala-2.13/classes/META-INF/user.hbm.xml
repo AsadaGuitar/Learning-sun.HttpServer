@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <code class="dif1">
+        <class name="com.example.app.domain.User" table="users" lazy="false">
+    </code>
+    <code class="dif2">
+        <id name="id" type="int">
+            <column name="ISBN" sql-type="char(17)" not-null="true"/>
+            <generator class="assigned"/>
+        </id>
+    </code>
+    <code class="dif3">
+        <property name="name" />
+        <property name="password" />
+    </code>
+</class>
+        </hibernate-mapping>

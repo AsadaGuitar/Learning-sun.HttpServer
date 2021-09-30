@@ -1,2 +1,5 @@
 [debug] Copy resource mappings: 
-[debug] 	
+[debug] 	(C:\Users\soroc\Documents\Scala-workspace\DeployTest\src\main\resources\hibernate.cfg.xml,C:\Users\soroc\Documents\Scala-workspace\DeployTest\target\scala-2.13\classes\hibernate.cfg.xml)
+[debug] 	(C:\Users\soroc\Documents\Scala-workspace\DeployTest\src\main\resources\log4j.xml,C:\Users\soroc\Documents\Scala-workspace\DeployTest\target\scala-2.13\classes\log4j.xml)
+[debug] 	(C:\Users\soroc\Documents\Scala-workspace\DeployTest\src\main\resources\log\DeployTest.log,C:\Users\soroc\Documents\Scala-workspace\DeployTest\target\scala-2.13\classes\log\DeployTest.log)
+[debug] 	(C:\Users\soroc\Documents\Scala-workspace\DeployTest\src\main\resources\META-INF\user.hbm.xml,C:\Users\soroc\Documents\Scala-workspace\DeployTest\target\scala-2.13\classes\META-INF\user.hbm.xml)

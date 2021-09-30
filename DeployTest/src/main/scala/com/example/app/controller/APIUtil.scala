@@ -1,4 +1,4 @@
-package com.example.app.api.home
+package com.example.app.controller
 
 import com.example.app.api.APIServer.Request
 import org.json.JSONObject
@@ -6,9 +6,9 @@ import org.json.JSONObject
 trait APIUtil {
 
   private val reqJson: Request => Option[JSONObject] =
-    (request: Request) => for{
-    req <- request.body
-  } yield new JSONObject(req)
+    (request: Request) => for {
+      req <- request.body
+    } yield new JSONObject(req)
 
   def jsonParam[T](param: String, filter: String => Boolean)
                   (exchange: String => T)

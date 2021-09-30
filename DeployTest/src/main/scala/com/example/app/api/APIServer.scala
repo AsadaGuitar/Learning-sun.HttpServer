@@ -1,6 +1,6 @@
 package com.example.app.api
 
-import com.example.app.api.home.{CostAPI, EntryAPI, MoneyAPI}
+import com.example.app.api.handler.HomeAPI
 import com.sun.net.httpserver.{HttpExchange, HttpHandler, HttpServer}
 
 import java.io.IOException
@@ -20,7 +20,6 @@ object APIServer {
                      body  : Option[String])
 
   def startServer(): Either[IOException,Unit] ={
-
     val port = 8000
 
     val server = try {
@@ -31,51 +30,12 @@ object APIServer {
     for {
       s <- server
     } yield {
-      s.createContext("/", new APIHandler())
+      s.createContext("/", new ApplicationAPI())
       s.start()
     }
   }
 
-  final class APIHandler extends HttpHandler {
-
-    private def homeHandler(path: Array[String], method: RequestMethod, request: Request)
-    : Option[String] = path match {
-      case x if x.isEmpty => None
-      case x => x.head match {
-        case "entry" => method match {
-          case GET =>
-            EntryAPI.get()
-            None
-          case POST =>
-            EntryAPI.post(request)
-            None
-          case PUT => None
-        }
-        case "money" => method match {
-          case GET => if (x.tail.isEmpty) {
-            None
-          }
-          else {
-            val child = x.tail.head
-            if (child.matches("\\d{1,11}")) {
-              MoneyAPI.get(child.toInt)
-            }
-            else {
-              None
-            }
-          }
-          case POST => MoneyAPI.post(request)
-          case PUT =>
-            MoneyAPI.put(request)
-            None
-        }
-        case "costs" => method match {
-          case GET => CostAPI.get(request)
-          case POST => CostAPI.post(request)
-          case PUT => None
-        }
-      }
-    }
+  final class ApplicationAPI extends HttpHandler {
 
     override def handle(exchange: HttpExchange): Unit = {
 
@@ -133,7 +93,7 @@ object APIServer {
       }
 
       val msg: Option[String] =
-        homeHandler(paths.tail, requestMethod, Request(requestHeader,requestBody))
+        HomeAPI.handler(Request(requestHeader,requestBody), paths.tail, requestMethod)
 
       if (msg.isEmpty) {
         println("msg is nothing")

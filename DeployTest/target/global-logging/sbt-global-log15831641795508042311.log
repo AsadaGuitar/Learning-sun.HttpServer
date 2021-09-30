@@ -1,0 +1,25 @@
+[debug] > Exec(all {file:/C:/Users/soroc/Documents/Scala-workspace/DeployTest/}deploytest/products {file:/C:/Users/soroc/Documents/Scala-workspace/DeployTest/}deploytest/test:products, None, None)
+[debug] Evaluating tasks: Compile / products, Test / products
+[debug] Running task... Cancel: Signal, check cycles: false, forcegc: true
+[info] compiling 4 Scala sources to C:\Users\soroc\Documents\Scala-workspace\DeployTest\target\scala-2.13\classes ...
+[error] C:\Users\soroc\Documents\Scala-workspace\DeployTest\src\main\scala\com\example\app\Main.scala:19:8: value setName is not a member of com.example.app.domain.User
+[error]   user.setName("this is test")
+[error]        ^
+[error] C:\Users\soroc\Documents\Scala-workspace\DeployTest\src\main\scala\com\example\app\Main.scala:20:8: value setPass is not a member of com.example.app.domain.User
+[error]   user.setPass("0000")
+[error]        ^
+[error] C:\Users\soroc\Documents\Scala-workspace\DeployTest\src\main\scala\com\example\app\Main.scala:28:26: value getName is not a member of com.example.app.domain.User
+[error]   results.stream().map(_.getName).forEach(println)
+[error]                          ^
+[error] C:\Users\soroc\Documents\Scala-workspace\DeployTest\src\main\scala\com\example\app\api\home\EntryAPI.scala:29:12: value setName is not a member of com.example.app.domain.User
+[error]       user.setName(name)
+[error]            ^
+[error] C:\Users\soroc\Documents\Scala-workspace\DeployTest\src\main\scala\com\example\app\api\home\EntryAPI.scala:30:12: value setPass is not a member of com.example.app.domain.User
+[error]       user.setPass(pass)
+[error]            ^
+[error] 5 errors found
+[error] (Compile / compileIncremental) Compilation failed
+[error] Total time: 0 s, completed 2021/09/29 23:53:52
+[debug] > Exec(idea-shell, None, None)
+[debug] > Exec(, None, None)
+[debug] > Exec(idea-shell, None, None)
