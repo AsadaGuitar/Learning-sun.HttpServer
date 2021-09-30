@@ -14,14 +14,4 @@ object HomeAPI extends APIHandler {
       case _ => None
     }
   }
-
-//  def homeHandler(path: Array[String], method: RequestMethod, request: Request)
-//  : Option[String] = path match {
-//    case x if x.isEmpty => None
-//    case x => x.head match {
-//
-//
-//
-//    }
-//  }
 }
