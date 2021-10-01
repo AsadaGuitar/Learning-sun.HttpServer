@@ -3,9 +3,11 @@ package com.example.app.repository
 import com.example.app.session.SessionFactory
 import com.example.app.dao.{DatabaseAccessory, MySQLAccessory}
 import com.example.app.domain.User
-import org.hibernate.HibernateException
+import org.hibernate.{HibernateException, Session}
 
 trait UserRepository extends DatabaseAccessory {
+
+  var session: Session = _
 
   protected def create(user: User): Either[HibernateException, Unit] = try {
     //session
@@ -20,6 +22,10 @@ trait UserRepository extends DatabaseAccessory {
   catch{
     case e: HibernateException => Left(e)
   }
+  finally {
+    session.close()
+  }
+
 }
 
 class UserRepositoryMySQL extends MySQLAccessory(false) with UserRepository

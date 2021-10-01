@@ -1,6 +1,6 @@
 package com.example.app.api
 
-import com.example.app.api.handler.HomeAPI
+import com.example.app.api.handler.{CostLoggingAPIHandler, MoneyLoggingHandler, UserLoggingHandler}
 import com.sun.net.httpserver.{HttpExchange, HttpHandler, HttpServer}
 
 import java.io.IOException
@@ -12,20 +12,25 @@ import java.time.{ZoneOffset, ZonedDateTime}
 object APIServer {
 
   sealed abstract class RequestMethod
-  case object GET   extends RequestMethod
-  case object POST  extends RequestMethod
-  case object PUT   extends RequestMethod
+
+  case object GET extends RequestMethod
+
+  case object POST extends RequestMethod
+
+  case object PUT extends RequestMethod
 
   case class Request(header: java.util.Set[java.util.Map.Entry[String, java.util.List[String]]],
-                     body  : Option[String])
+                     body: Option[String])
 
-  def startServer(): Either[IOException,Unit] ={
+  def startServer(): Either[IOException, Unit] = {
     val port = 8000
 
     val server = try {
       val httpServer = HttpServer.create(new InetSocketAddress(port), 0)
       Right(httpServer)
-    } catch {case e: java.io.IOException => Left(e)}
+    } catch {
+      case e: java.io.IOException => Left(e)
+    }
 
     for {
       s <- server
@@ -41,20 +46,20 @@ object APIServer {
 
       //通信情報
       val requestMethod = exchange.getRequestMethod match {
-        case "GET"  => GET
+        case "GET" => GET
         case "POST" => POST
-        case "PUT"  => PUT
+        case "PUT" => PUT
       }
-      val requestURI    = exchange.getRequestURI
-      val protocol      = exchange.getProtocol
+      val requestURI = exchange.getRequestURI
+      val protocol = exchange.getProtocol
 
       println(
         s"""
-          |*************************************
-          |URI      = $requestURI
-          |METHOD   = $requestMethod
-          |PROTOCOL = $protocol
-          |""".stripMargin)
+           |*************************************
+           |URI       = $requestURI
+           |METHOD    = $requestMethod
+           |PROTOCOL  = $protocol
+           |""".stripMargin)
 
       //リクエストヘッダー
       val requestHeader = {
@@ -66,11 +71,11 @@ object APIServer {
       requestHeader.forEach(y => println(y))
 
       //リクエストボディ
-      val requestBody: Option[String] ={
+      val requestBody: Option[String] = {
         val is = exchange.getRequestBody
         val byteData = is.readAllBytes()
         is.close()
-        if(byteData.isEmpty) None
+        if (byteData.isEmpty) None
         else Some(new String(byteData))
       }
 
@@ -87,13 +92,27 @@ object APIServer {
         println("Could not path.")
         return
       }
-      if (paths.head != "home") {
-        println("path is illegal.")
-        return
-      }
+//      if (paths.head != "home") {
+//        println("path is illegal.")
+//        return
+//      }
 
-      val msg: Option[String] =
-        HomeAPI.handler(Request(requestHeader,requestBody), paths.tail, requestMethod)
+      val msg: Option[String] = paths match {
+        case p if p.isEmpty => None
+        case p => p.head match {
+          case "user" =>
+            println("user!")
+            val handle = new UserLoggingHandler
+            handle.handler(Request(requestHeader, requestBody), paths.tail, requestMethod)
+          case "money" =>
+            val handle = new MoneyLoggingHandler
+            handle.handler(Request(requestHeader, requestBody), paths.tail, requestMethod)
+          case "cost" =>
+            val handle = new CostLoggingAPIHandler
+            handle.handler(Request(requestHeader, requestBody), paths.tail, requestMethod)
+          case _ => None
+        }
+      }
 
       if (msg.isEmpty) {
         println("msg is nothing")
@@ -126,7 +145,6 @@ object APIServer {
       val os = exchange.getResponseBody
       os.write(resBody.getBytes)
     }
-
   }
 }
 
