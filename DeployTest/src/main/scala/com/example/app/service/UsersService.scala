@@ -1,39 +1,39 @@
 package com.example.app.service
 
-import com.example.app.dao.{CommitException, ConnectionException, RollbackException, SavepointException}
 import com.example.app.domain.User
-import com.example.app.repository.{UserRepository, UserRepositoryMySQL}
+import com.example.app.session.{SessionException, SessionFactory}
+import org.hibernate.HibernateException
 
+class UsersService {
 
-trait UsersService extends UserRepository {
+  def insert(user: User): Either[SessionException, Unit] = {
 
-  def insert(user: User): String ={
-    try {
-
-      setConnection()
-
-      val sp = setSavepoint()
-
-      create(user) match {
-        case Right(_) =>
-        case Left(e) => rollBack(sp)
-          return s"Could not create 'users'.\n${e.getMessage}"
-      }
-
-      commit()
+    //session
+    val session = try {
+      Right(SessionFactory.getSessionFactory.openSession)
     }
     catch {
-      case e1: ConnectionException => return s"Could not to connect database.\n${e1.getMessage}"
-      case e2: SavepointException => return s"Could not to get 'Savepoint'.\n${e2.getMessage}"
-      case e3: RollbackException => return s"Could not to rollback\n${e3.getMessage}"
-      case e4: CommitException => return s"Could not to commit\n${e4.getMessage}"
-    }
-    finally {
-      close()
+      case e: HibernateException => Left(new SessionException(e))
     }
 
-    "Success to commit."
+    val result = for {
+      s <- session
+    } yield {
+      //insert
+      s.beginTransaction()
+      s.save(user)
+      //commit
+      s.getTransaction.commit()
+      //close
+      try {
+        Right(s.close())
+      }
+      catch {
+        case e: java.io.IOException => Left(new SessionException(e))
+      }
+    }
+
+    result.flatten
   }
 }
 
-class UserServiceMySQL extends UserRepositoryMySQL with UsersService

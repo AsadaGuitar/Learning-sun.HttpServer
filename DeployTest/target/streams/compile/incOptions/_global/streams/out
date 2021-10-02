@@ -1,2 +1,11 @@
 [debug] Created transactional ClassFileManager with tempDir = C:\Users\soroc\Documents\Scala-workspace\DeployTest\target\scala-2.13\classes.bak
+[debug] About to delete class files:
+[debug] 	MoneyAPIHandler.class
+[debug] 	LoggingMoneyAPIHandler.class
+[debug] We backup class files:
+[debug] 	MoneyAPIHandler.class
+[debug] 	LoggingMoneyAPIHandler.class
+[debug] Registering generated classes:
+[debug] 	MoneyAPIHandler.class
+[debug] 	LoggingMoneyAPIHandler.class
 [debug] Removing the temporary directory used for backing up class files: C:\Users\soroc\Documents\Scala-workspace\DeployTest\target\scala-2.13\classes.bak

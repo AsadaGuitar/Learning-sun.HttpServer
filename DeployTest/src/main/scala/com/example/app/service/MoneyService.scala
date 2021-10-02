@@ -1,10 +1,11 @@
 package com.example.app.service
 
-import com.example.app.dao.{CommitException, ConnectionException, RollbackException, SavepointException}
 import com.example.app.domain.Money
-import com.example.app.repository.{MoneyRepository, MoneyRepositoryMySQL}
+import com.example.app.session.{SessionException, SessionFactory}
+import org.hibernate.HibernateException
 
 import java.util.{Calendar, Date}
+import scala.collection.JavaConverters._
 
 object MoneyService {
 
@@ -36,61 +37,56 @@ object MoneyService {
   }
 }
 
-trait MoneyService extends MoneyRepository{
-  import MoneyService._
+class MoneyService {
 
-  def findAllMoney(userId: Int) = try {
+  def selectAll(): Either[SessionException, Seq[Money]] = {
 
-    setConnection()
-
-    readALLMoney(userId) match {
-      case Right(rs) =>
-        rs.next()
-        val total = rs.getInt("total")
-        val responseFormat = "Total Money = %d.\nMoney can use everyday = %d."
-        Some(responseFormat.format(total, moneyToUseEveryDay(total)))
-
-      case Left(e) =>
-        println(s"Could not read.\n${e.getMessage}")
-        None
-    }
-  }
-  catch {
-    case e: ConnectionException =>
-      println(s"Could not to connect database.\n${e.getMessage}")
-      None
-  }
-
-  def insert(money: Money): String ={
-
-    try {
-
-      setConnection()
-
-      val sp = setSavepoint()
-
-      create(money) match {
-        case Right(_) => println("success")
-        case Left(e) =>
-          println(s"Could not create.\n${e.getMessage}")
-          rollBack(sp)
-      }
-
-      commit()
+    //session
+    val session = try {
+      Right(SessionFactory.getSessionFactory.openSession)
     }
     catch {
-      case e1: ConnectionException => return s"Could not to connect database.\n${e1.getMessage}"
-      case e2: SavepointException => return s"Could not to get 'Savepoint'.\n${e2.getMessage}"
-      case e3: RollbackException => return s"Could not to rollback\n${e3.getMessage}"
-      case e4: CommitException => return s"Could not to commit\n${e4.getMessage}"
-    }
-    finally {
-      close()
+      case e: HibernateException => Left(new SessionException(e))
     }
 
-    "success to commit."
+    for {
+      s <- session
+    } yield {
+      val query = s.createQuery("From Money", classOf[Money])
+      val javaList: java.util.List[Money] = query.list()
+      val scalaList = javaList.asScala
+      scalaList.toSeq
+    }
   }
 
+  def insert(money: Money): Either[SessionException, Unit] ={
+
+    //session
+    lazy val session = try {
+      Right(SessionFactory.getSessionFactory.openSession)
+    }
+    catch {
+      case e: HibernateException => Left(new SessionException(e))
+    }
+
+    val result = for{
+      s <- session
+    } yield  {
+      //insert
+      s.beginTransaction()
+      s.save(money)
+      //commit
+      s.getTransaction.commit()
+      //close
+      try {
+        Right(s.close())
+      }
+      catch {
+        case e: java.io.IOException => Left(new SessionException(e))
+      }
+    }
+
+    result.flatten
+  }
 }
 
-class MoneyServiceMySQL extends MoneyRepositoryMySQL with MoneyService

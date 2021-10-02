@@ -4,9 +4,12 @@ import com.example.app.api.APIServer
 
 object Main extends App {
 
-  for {
-    s <- APIServer.startServer()
-  } yield s
+  try {
+    APIServer.startServer()
+  }
+  catch {
+    case e: java.io.IOException => println(e.getMessage)
+  }
 //  val log = Logger.getLogger(this.getClass.getName)
 //  log.info("HELLO")
 //

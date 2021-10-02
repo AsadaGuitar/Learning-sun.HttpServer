@@ -25,6 +25,7 @@
         <!-- マップするモデルを記述 -->
         <mapping class="com.example.app.domain.User" />
         <mapping class="com.example.app.domain.Money" />
+        <mapping class="com.example.app.domain.Cost" />
 
     </session-factory>
 </hibernate-configuration>

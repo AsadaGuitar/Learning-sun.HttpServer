@@ -1,22 +1,50 @@
 package com.example.app.domain
 
+import javax.persistence.{Column, Entity, Id, Table}
+
 object Cost {
 
-  def apply(userId: Int, rent: Option[Int], card: Option[Int],
-            other: Option[Int], friends: Option[Int], month: Int) = {
+  def apply(userId: Int, month: Int) = {
     val cost = new Cost
+    cost.setUserId(userId)
+    cost.setMonth(month)
+    cost
+  }
+
+  def apply(userId: Int, rent: Int, card: Int, other: Int,
+            friends: Int, month: Int) = {
+    val cost = new Cost
+    cost.setUserId(userId)
+    cost.setRent(rent)
+    cost.setCard(card)
+    cost.setOther(other)
+    cost.setFriends(friends)
+    cost.setMonth(month)
     cost
   }
 }
 
+@Entity
+@Table(name = "utility_costs")
+class Cost {
 
-class Cost (){
-
+  @Id
+  @Column(name = "user_id")
   var userId: Int = _
-  var rent: Option[Int] = _
-  var card: Option[Int] = _
-  var other: Option[Int] = _
-  var friends: Option[Int] = _
+
+  @Column(name = "rent")
+  var rent: Int = _
+
+  @Column(name = "card")
+  var card: Int = _
+
+  @Column(name = "other")
+  var other: Int = _
+
+  @Column(name = "friends")
+  var friends: Int = _
+
+  @Column(name = "month")
   var month: Int = _
 
   def getUserId = userId
@@ -27,9 +55,9 @@ class Cost (){
   def getMonth = month
 
   def setUserId(userId: Int): Unit = this.userId = userId
-  def setRent(rent: Option[Int]): Unit = this.rent = rent
-  def setCard(card: Option[Int]): Unit = this.card = card
-  def setOther(other: Option[Int]): Unit = this.other = other
-  def setFriends(friends: Option[Int]): Unit = this.friends = friends
+  def setRent(rent: Int): Unit = this.rent = rent
+  def setCard(card: Int): Unit = this.card = card
+  def setOther(other: Int): Unit = this.other = other
+  def setFriends(friends: Int): Unit = this.friends = friends
   def setMonth(month: Int): Unit = this.month = month
 }

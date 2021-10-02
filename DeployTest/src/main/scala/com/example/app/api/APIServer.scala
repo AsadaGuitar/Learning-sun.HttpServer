@@ -1,9 +1,9 @@
 package com.example.app.api
 
-import com.example.app.api.handler.{CostLoggingAPIHandler, MoneyLoggingHandler, UserLoggingHandler}
+import com.example.app.api.handler.{LoggingCostAPIHandler, LoggingMoneyAPIHandler, LoggingUserAPIHandler}
+import com.example.app.session.SessionException
 import com.sun.net.httpserver.{HttpExchange, HttpHandler, HttpServer}
 
-import java.io.IOException
 import java.net.InetSocketAddress
 import java.nio.charset.StandardCharsets
 import java.time.format.DateTimeFormatter
@@ -12,33 +12,26 @@ import java.time.{ZoneOffset, ZonedDateTime}
 object APIServer {
 
   sealed abstract class RequestMethod
-
   case object GET extends RequestMethod
-
   case object POST extends RequestMethod
-
   case object PUT extends RequestMethod
 
   case class Request(header: java.util.Set[java.util.Map.Entry[String, java.util.List[String]]],
                      body: Option[String])
 
-  def startServer(): Either[IOException, Unit] = {
+  private var server: HttpServer = _
+
+  @throws[java.io.IOException]
+  def startServer(): Unit = {
     val port = 8000
 
-    val server = try {
-      val httpServer = HttpServer.create(new InetSocketAddress(port), 0)
-      Right(httpServer)
-    } catch {
-      case e: java.io.IOException => Left(e)
-    }
-
-    for {
-      s <- server
-    } yield {
-      s.createContext("/", new ApplicationAPI())
-      s.start()
-    }
+    server = HttpServer.create(new InetSocketAddress(port), 0)
+    server.createContext("/", new ApplicationAPI())
+    server.start()
   }
+
+  @throws[java.io.IOException]
+  def stopServer(): Unit = server.stop(0)
 
   final class ApplicationAPI extends HttpHandler {
 
@@ -92,30 +85,25 @@ object APIServer {
         println("Could not path.")
         return
       }
-//      if (paths.head != "home") {
-//        println("path is illegal.")
-//        return
-//      }
 
-      val msg: Option[String] = paths match {
-        case p if p.isEmpty => None
+      val msg: Either[SessionException, Option[String]] = paths match {
+        case p if p.isEmpty => Right(None)
         case p => p.head match {
           case "user" =>
-            println("user!")
-            val handle = new UserLoggingHandler
+            val handle = new LoggingUserAPIHandler
             handle.handler(Request(requestHeader, requestBody), paths.tail, requestMethod)
           case "money" =>
-            val handle = new MoneyLoggingHandler
+            val handle = new LoggingMoneyAPIHandler
             handle.handler(Request(requestHeader, requestBody), paths.tail, requestMethod)
           case "cost" =>
-            val handle = new CostLoggingAPIHandler
+            val handle = new LoggingCostAPIHandler
             handle.handler(Request(requestHeader, requestBody), paths.tail, requestMethod)
-          case _ => None
+          case _ => Right(None)
         }
       }
 
-      if (msg.isEmpty) {
-        println("msg is nothing")
+      if (msg.isLeft) {
+        stopServer()
         return
       }
 
@@ -134,7 +122,13 @@ object APIServer {
         + System.getProperty("java.vm.version") + ")")
 
       //レスポンスボディ
-      val resBody = msg.get
+      val resBody = msg match {
+        case Right(x) => x match {
+          case Some(y) => y
+          case None => ""
+        }
+        case Left(_) => ""
+      }
 
       // レスポンスヘッダを送信
       val statusCode = 200

@@ -1,43 +1,23 @@
 package com.example.app.api.handler
 import com.example.app.api.APIServer
 import com.example.app.api.APIServer.{GET, POST, PUT, Request}
-import com.example.app.domain.User
-import com.example.app.service.UserServiceMySQL
+import com.example.app.controller.UserController
+import com.example.app.session.SessionException
+
+
+class LoggingUserAPIHandler extends UserAPIHandler with LoggableAPIHandler
 
 class UserAPIHandler extends APIHandler {
 
-  val service = new UserServiceMySQL
+  val controller = new UserController
 
   override def handler(request: Request, path: Array[String], method: APIServer.RequestMethod)
-  : Option[String] = path match {
+  : Either[SessionException, Option[String]] = path match {
     case p if p.isEmpty => method match {
-      case GET => None
-      case POST => post(request)
-      case PUT => None
+      case GET => Right(None)
+      case POST => controller.post(request)
+      case PUT => Right(None)
     }
-    case _ => None
+    case _ => Right(None)
   }
-
-  override def get(implicit request: Request): Option[String] = None
-
-  override def post(implicit request: Request): Option[String] ={
-
-    val jsonName = getJsonParam("name", _ => true)
-    if (jsonName.isEmpty) return Some("Could not Found 'name'.")
-
-    val jsonPass = getJsonParam("pass", _ => true)
-    if (jsonPass.isEmpty) return Some("Could not Found 'pass'.")
-
-    for {
-      name <- jsonName
-      pass <- jsonPass
-    } yield {
-      val user = User(0, name, pass)
-      service.insert(user)
-    }
-  }
-
-  override def put(implicit request: Request): Option[String] = None
 }
-
-class UserLoggingHandler extends UserAPIHandler with LoggableAPIHandler
